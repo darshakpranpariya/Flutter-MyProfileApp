@@ -7,19 +7,24 @@ class ProfilePage extends StatelessWidget {
       body:Container(
         child:Stack(
           children: <Widget>[
-          screen(),
+            Container(
+              padding: EdgeInsets.only(top:0.0),
+              height: 200.0,
+              width: 400.0,
+              color: Colors.blue[50],
+            ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Padding(padding: EdgeInsets.only(top:450.0),),
+              Padding(padding: EdgeInsets.only(top:210.0),),
               pp(),
             ],
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Padding(padding: EdgeInsets.only(top:275.0),),
+              Padding(padding: EdgeInsets.only(top:200.0),),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -102,6 +107,8 @@ class ProfilePage extends StatelessWidget {
   Widget screen(){
     return Container(
       child: Image(
+        height: 240.0,
+        // width:400.0,
         image: AssetImage("asset/4.jpeg"),
       ),
     );
@@ -112,7 +119,7 @@ class ProfilePage extends StatelessWidget {
       backgroundImage: ExactAssetImage("asset/5.JPG"),
       minRadius: 50,
       maxRadius: 70,
-      )
+      ),
     );
   }
 }

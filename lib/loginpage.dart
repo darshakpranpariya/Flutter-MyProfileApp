@@ -1,4 +1,5 @@
-import 'package:firebaselogin/profilepage.dart';
+//import 'package:firebaselogin/profilepage.dart';
+import 'package:firebaselogin/services/crud.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
@@ -38,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
           ).then((FirebaseUser user){
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ProfilePage()));
+              MaterialPageRoute(builder: (context) => CRUD()));
           });
       }
       else{
@@ -73,7 +74,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green[50],
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(title: Text("LogIn")),
       body: Container(
