@@ -26,10 +26,12 @@ dependencies:
   firebase_auth:
   cloud_firestore:
   rflutter_alert: ^1.0.2
+  intl:
+  
 
 dev_dependencies:
   flutter_test:
-    sdk: flutter
+    sdk: flutter 
 
 
 # For information on the generic Dart part of this file, see the

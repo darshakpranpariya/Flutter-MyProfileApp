@@ -37,7 +37,4 @@ class CRUD1{
       print(e);
     });
   }
-
-
-
 }

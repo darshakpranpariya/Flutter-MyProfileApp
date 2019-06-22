@@ -3,6 +3,7 @@ import 'package:firebaselogin/profilepage.dart' as pp;
 import 'package:firebaselogin/services/crud1.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/intl.dart';
 
 class CRUD extends StatefulWidget {
   @override
@@ -12,6 +13,9 @@ class CRUD extends StatefulWidget {
 class _CRUDState extends State<CRUD> with
 SingleTickerProviderStateMixin {
 
+  //DateTime now = DateTime.now();
+  
+
   String noteTitle;
   String note;
 
@@ -19,8 +23,18 @@ SingleTickerProviderStateMixin {
 
   CRUD1 crudobj = new CRUD1();
 
-  static final TextEditingController _textController = TextEditingController();
-  bool r = false;
+  final _text = TextEditingController();
+  final _text1 = TextEditingController();
+  bool _validate = false;
+
+  @override
+  void dispose() {
+    _text.dispose();
+    super.dispose();
+  }
+
+  // static final TextEditingController _textController = TextEditingController();
+  // bool r = false;
 
    Widget addDialog(BuildContext context) {
     return Dialog(
@@ -39,7 +53,7 @@ Future<void> _ackAlert(BuildContext context) {
     builder: (BuildContext context) {
       return AlertDialog(
         title: Text('Thanks'),
-        content: const Text('Your Note Saved Successfully'),
+        content: const Text('Your Note Saved Successfully \n Please press Refresh button'),
         actions: <Widget>[
           FlatButton(
             child: Text('Ok'),
@@ -55,6 +69,7 @@ Future<void> _ackAlert(BuildContext context) {
 
   dialogContent(BuildContext context) {
   return Stack(
+    
     children: <Widget>[
       Center(
             child: Container(
@@ -69,11 +84,11 @@ Future<void> _ackAlert(BuildContext context) {
                     Icon(Icons.event_note,size:50.0,),
                     SizedBox(height: 40.0),
                     TextField(
-                      controller:_textController,
+                      controller: _text,
                       style: TextStyle(fontSize: 20.0),
                       obscureText: false,
                       decoration: InputDecoration(
-                        //errorText: r?"Can't be Empty":null,
+                        // errorText: _validate ? 'Value Can\'t Be Empty' : null,
                           contentPadding: EdgeInsets.fromLTRB(10.0, 15.0, 20.0, 15.0),
                           hintText: "Notes Title",
                           hintStyle: TextStyle(fontSize: 18.0,color: Colors.orange),
@@ -85,7 +100,7 @@ Future<void> _ackAlert(BuildContext context) {
                     ),
                     SizedBox(height: 25.0),
                     TextField(
-      
+                      controller: _text1,
                       style: TextStyle(fontSize: 20.0),
                       obscureText: false,
                       decoration: InputDecoration(
@@ -109,13 +124,20 @@ Future<void> _ackAlert(BuildContext context) {
                           padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                           onPressed: () {
                             Navigator.of(context).pop();
-                            Map<String,dynamic> noteData = {'NoteTitle':noteTitle,'Note':note};
+                            setState(() {
+                            _text.text.isEmpty || _text1.text.isEmpty ? _validate = true : _validate = false;
+                            });
+                            if(!_validate){
+                            String formattedDate = DateFormat('    d-M-y  h:mm a').format(DateTime.now());
+                            Map<String,dynamic> noteData = {'NoteTitle':noteTitle,'Note':note,'Date':formattedDate};
                             crudobj.addData(noteData,context).then((result){
                               _ackAlert(context);
                             }).catchError((e){
                               print(e);
-                            });
-                            
+                            });}
+                            _text.clear();
+                            _text1.clear();
+                           _validate=false;
                           },
                           child: Text("Done",
                               textAlign: TextAlign.center,
@@ -201,14 +223,22 @@ Future<void> _ackAlert(BuildContext context) {
         padding: EdgeInsets.all(5.0),
         itemBuilder:(context,i){
           return  ListTile(
-                leading: Icon(Icons.note
-                ),
+                leading: Icon(Icons.note),
                 title: 
                   Text(notes.documents[i].data['NoteTitle'],
-                  style: TextStyle(fontSize: 18.0,fontWeight: FontWeight.bold),),
-                subtitle: 
-                  Text(notes.documents[i].data['Note'],
-                  style: TextStyle(fontSize: 18.0),),
+                  style: TextStyle(fontSize: 16.0,fontWeight: FontWeight.bold),),
+                subtitle:
+                    Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                    Text(notes.documents[i].data['Note'],
+                    style: TextStyle(fontSize: 15.0),),
+                  
+                    Text(notes.documents[i].data['Date'],
+                    style: TextStyle(fontSize: 15.0),),
+                    ],
+                  ),    
                 trailing: 
                   Icon(Icons.delete),
                   onTap: (){
