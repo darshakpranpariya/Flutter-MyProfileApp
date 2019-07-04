@@ -241,7 +241,7 @@ Future<void> _ackAlert(BuildContext context) {
                   ),    
                 trailing: 
                   Icon(Icons.delete),
-                  onTap: (){
+                  onLongPress: (){
                     crudobj.deleteData(notes.documents[i].documentID);
                         crudobj.getData().then((result){
                         setState(() {
